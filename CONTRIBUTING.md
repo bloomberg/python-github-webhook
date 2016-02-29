@@ -12,8 +12,8 @@ answered as quickly as we can.
 ## Contribution Licensing
 
 Since python-github-webhook is distributed under the terms of the [Apache License, Version
-2.0](http://www.apache.org/licenses/LICENSE-2.0.html), contributions that you make to python-github-
-webhook are licensed under the same terms. In order for us to be able to accept your contributions,
+2.0](http://www.apache.org/licenses/LICENSE-2.0.html), contributions that you make to python-github-webhook
+are licensed under the same terms. In order for us to be able to accept your contributions,
 we will need explicit confirmation from you that you are able and willing to provide them under
 these terms, and the mechanism we use to do this is called a Developer's Certificate of Origin
 [DCO](DCO.md).  This is very similar to the process used by the Linux(R) kernel, Samba, and many
