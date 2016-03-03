@@ -7,6 +7,14 @@ from flask import abort, request
 
 
 class Webhook(object):
+    """
+    Construct a webhook on the given :code:`app`.
+
+    :param app: Flask app that will host the webhook
+    :param endpoint: the endpoint for the registered URL rule
+    :param secret: Optional secret, used to authenticate the hook comes from Github
+    """
+
     def __init__(self, app, endpoint='/postreceive', secret=None):
         app.add_url_rule(endpoint, view_func=self._postreceive,
                          methods=['POST'])
@@ -14,6 +22,20 @@ class Webhook(object):
         self._hooks = collections.defaultdict(list)
         self._logger = logging.getLogger('webhook')
         self._secret = secret
+
+    def hook(self, event_type='push'):
+        """
+        Registers a function as a hook. Multiple hooks can be registered for a given type, but the
+        order in which they are invoke is unspecified.
+
+        :param event_type: The event type this hook will be invoked for.
+        """
+
+        def decorator(func):
+            self._hooks[event_type].append(func)
+            return func
+
+        return decorator
 
     def _get_digest(self):
         """Return message digest if a secret key was provided"""
@@ -46,15 +68,6 @@ class Webhook(object):
             hook(data)
 
         return '', 204
-
-    def hook(self, event_type='push'):
-        """Registers a function as a hook"""
-
-        def decorator(func):
-            self._hooks[event_type].append(func)
-            return func
-
-        return decorator
 
 def _get_header(key):
     """Return message header"""
