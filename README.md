@@ -1,5 +1,7 @@
 # GitHub Webhook (micro) Framework
 
+[![PyPI](https://img.shields.io/pypi/v/github-webhook.svg)][2]
+
 `python-github-webhook` is a very simple, but powerful, microframework for writing [Github
 webhooks][1] in Python. It can be used to write webhooks for individual repositories or whole
 organisations, and can be used for Github.com or Github Enterprise installations; in fact, it was
@@ -35,3 +37,4 @@ The `python-github-webhook` repository is distributed under the Apache License (
 see the LICENSE file at the top of the source tree for more information.
 
 [1]: https://developer.github.com/webhooks/
+[2]: https://pypi.python.org/pypi/github-webhook
