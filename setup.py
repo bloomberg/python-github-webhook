@@ -9,4 +9,19 @@ setup(name="github-webhook",
       license='Apache 2.0',
       packages=["github_webhook"],
       install_requires=['flask'],
+
+      classifiers=[
+          'Development Status :: 4 - Beta',
+          'Framework :: Flask',
+          'Environment :: Web Environment',
+          'Intended Audience :: Developers',
+          'Intended Audience :: System Administrators',
+          'License :: OSI Approved :: Apache Software License',
+          'Operating System :: MacOS :: MacOS X',
+          'Operating System :: Microsoft :: Windows',
+          'Operating System :: POSIX',
+          'Programming Language :: Python :: 2',
+          'Programming Language :: Python :: 3',
+          'Topic :: Software Development :: Version Control'
+          ],
       test_suite='nose.collector')
