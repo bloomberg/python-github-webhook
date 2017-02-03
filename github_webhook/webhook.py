@@ -22,7 +22,7 @@ class Webhook(object):
 
         self._hooks = collections.defaultdict(list)
         self._logger = logging.getLogger('webhook')
-        if secret and not isinstance(secret, six.binary_type):
+        if secret is not None and not isinstance(secret, six.binary_type):
             secret = secret.encode('utf-8')
         self._secret = secret
 
