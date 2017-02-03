@@ -8,7 +8,8 @@ setup(name="github-webhook",
       author_email="achamberlai9@bloomberg.net, fphillips7@bloomberg.net, dkiss1@bloomberg.net, dbeer1@bloomberg.net",
       license='Apache 2.0',
       packages=["github_webhook"],
-      install_requires=['flask'],
+      install_requires=['flask', 'six'],
+      tests_require=['mock', 'nose'],
 
       classifiers=[
           'Development Status :: 4 - Beta',
