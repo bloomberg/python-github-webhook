@@ -105,6 +105,8 @@ EVENT_DESCRIPTIONS = {
     'public': '{sender[login]} publicized {repository[full_name]}',
     'pull_request': '{sender[login]} {action} pull #{pull_request[number]} in '
                     '{repository[full_name]}',
+    'pull_request_review': '{sender[login]} {action} {review[state]} review on pull #{pull_request[number]} in '
+                           '{repository[full_name]}',
     'pull_request_review_comment': '{comment[user][login]} {action} comment '
                                    'on pull #{pull_request[number]} in '
                                    '{repository[full_name]}',
