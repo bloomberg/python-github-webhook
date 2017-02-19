@@ -3,6 +3,7 @@ import hashlib
 import hmac
 import logging
 
+import six
 from flask import abort, request
 
 
@@ -21,6 +22,8 @@ class Webhook(object):
 
         self._hooks = collections.defaultdict(list)
         self._logger = logging.getLogger('webhook')
+        if secret is not None and not isinstance(secret, six.binary_type):
+            secret = secret.encode('utf-8')
         self._secret = secret
 
     def hook(self, event_type='push'):
@@ -50,9 +53,11 @@ class Webhook(object):
 
         if digest is not None:
             sig_parts = _get_header('X-Hub-Signature').split('=', 1)
+            if not isinstance(digest, six.text_type):
+                digest = six.text_type(digest)
 
             if (len(sig_parts) < 2 or sig_parts[0] != 'sha1'
-                    or not hmac.compare_digest(sig_parts[1], unicode(digest))):
+                    or not hmac.compare_digest(sig_parts[1], digest)):
                 abort(400, 'Invalid signature')
 
         event_type = _get_header('X-Github-Event')
