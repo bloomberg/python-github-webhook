@@ -3,7 +3,10 @@
 from __future__ import print_function
 
 import unittest
-from mock import Mock
+try:
+    from unittest.mock import Mock
+except ImportError:
+    from mock import Mock
 
 from github_webhook.webhook import Webhook
 
