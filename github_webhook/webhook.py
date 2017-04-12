@@ -4,6 +4,7 @@ import hmac
 import logging
 
 import six
+import concurrent.futures
 from flask import abort, request
 
 
@@ -16,10 +17,10 @@ class Webhook(object):
     :param secret: Optional secret, used to authenticate the hook comes from Github
     """
 
-    def __init__(self, app, endpoint='/postreceive', secret=None):
+    def __init__(self, app, endpoint='/postreceive', secret=None, max_workers=2):
         app.add_url_rule(endpoint, view_func=self._postreceive,
                          methods=['POST'])
-
+        self._executor = concurrent.futures.ThreadPoolExecutor(max_workers)
         self._hooks = collections.defaultdict(list)
         self._logger = logging.getLogger('webhook')
         if secret is not None and not isinstance(secret, six.binary_type):
@@ -70,7 +71,7 @@ class Webhook(object):
             '%s (%s)', _format_event(event_type, data), _get_header('X-Github-Delivery'))
 
         for hook in self._hooks.get(event_type, []):
-            hook(data)
+            self._executor.submit(hook, data)
 
         return '', 204
 
