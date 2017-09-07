@@ -5,7 +5,7 @@ contributions!
 
 Below you will find some basic steps required to be able to contribute to python-github-webhook. If
 you have any questions about this process or any other aspect of contributing to a Bloomberg open
-source project, feel free to send an email to open-tech@bloomberg.net and we'll get your questions
+source project, feel free to send an email to open-source@bloomberg.net and we'll get your questions
 answered as quickly as we can.
 
 
