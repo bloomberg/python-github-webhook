@@ -13,7 +13,7 @@ orginally developed for Bloomberg's GHE install.
 receives push events all it takes is:
 
 ```py
-from github_webhook import Webhook
+from github_webhook import Webhook, EventType
 from flask import Flask
 
 app = Flask(__name__)  # Standard Flask app
@@ -26,6 +26,12 @@ def hello_world():
 @webhook.hook()        # Defines a handler for the 'push' event
 def on_push(data):
     print("Got push with: {0}".format(data))
+
+@webhook.hook(event_type=EventType.Ping)        # Defines a handler for the 'ping' event
+def on_push(data):
+    print("Got push with: {0}".format(data))
+
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=80)

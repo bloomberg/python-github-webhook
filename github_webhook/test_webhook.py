@@ -3,6 +3,10 @@
 from __future__ import print_function
 
 import unittest
+from nose.tools import assert_equal
+
+from github_webhook.event_type import EventType
+
 try:
     from unittest.mock import Mock
 except ImportError:
@@ -23,6 +27,24 @@ class TestWebhook(unittest.TestCase):
         # THEN
         app.add_url_rule.assert_called_once_with(
             '/postreceive', view_func=webhook._postreceive, methods=['POST'])
+
+    def test_hook(self):
+        # GIVEN
+        app = Mock()
+
+        def test_handler():
+            return "OK"
+
+        # WHEN
+        webhook = Webhook(app)
+
+        webhook.hook()(test_handler)
+        assert_equal(webhook._hooks['push'][0], test_handler)
+        webhook.hook(EventType.CommitComment)(test_handler)
+        assert_equal(webhook._hooks['commit_comment'][0], test_handler)
+        webhook.hook('deployment')(test_handler)
+        assert_equal(webhook._hooks['deployment'][0], test_handler)
+
 
 # -----------------------------------------------------------------------------
 # Copyright 2015 Bloomberg Finance L.P.
