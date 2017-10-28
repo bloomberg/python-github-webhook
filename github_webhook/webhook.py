@@ -74,6 +74,7 @@ class Webhook(object):
 
         return '', 204
 
+
 def _get_header(key):
     """Return message header"""
 
@@ -81,6 +82,7 @@ def _get_header(key):
         return request.headers[key]
     except KeyError:
         abort(400, 'Missing header: ' + key)
+
 
 EVENT_DESCRIPTIONS = {
     'commit_comment': '{comment[user][login]} commented on '
@@ -110,7 +112,8 @@ EVENT_DESCRIPTIONS = {
     'public': '{sender[login]} publicized {repository[full_name]}',
     'pull_request': '{sender[login]} {action} pull #{pull_request[number]} in '
                     '{repository[full_name]}',
-    'pull_request_review': '{sender[login]} {action} {review[state]} review on pull #{pull_request[number]} in '
+    'pull_request_review': '{sender[login]} {action} {review[state]} '
+                           'review on pull #{pull_request[number]} in '
                            '{repository[full_name]}',
     'pull_request_review_comment': '{comment[user][login]} {action} comment '
                                    'on pull #{pull_request[number]} in '
@@ -127,6 +130,7 @@ EVENT_DESCRIPTIONS = {
     'watch': '{sender[login]} {action} watch in repository '
              '{repository[full_name]}'
 }
+
 
 def _format_event(event_type, data):
     try:

@@ -8,7 +8,7 @@
     :license: Apache License, Version 2.0
 """
 
-from github_webhook.webhook import Webhook
+from github_webhook.webhook import Webhook  # noqa
 
 # -----------------------------------------------------------------------------
 # Copyright 2015 Bloomberg Finance L.P.
