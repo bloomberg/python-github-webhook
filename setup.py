@@ -9,7 +9,7 @@ setup(name="github-webhook",
       license='Apache 2.0',
       packages=["github_webhook"],
       install_requires=['flask', 'six'],
-      tests_require=['mock', 'nose'],
+      tests_require=['mock', 'pytest'],
 
       classifiers=[
           'Development Status :: 4 - Beta',
