@@ -4,6 +4,7 @@ from __future__ import print_function
 
 import pytest
 import werkzeug
+
 try:
     from unittest import mock
 except ImportError:
@@ -15,9 +16,7 @@ from github_webhook.webhook import Webhook
 @pytest.fixture
 def mock_request():
     with mock.patch("github_webhook.webhook.request") as req:
-        req.headers = {
-            "X-Github-Delivery": ""
-        }
+        req.headers = {"X-Github-Delivery": ""}
         yield req
 
 
@@ -53,10 +52,8 @@ def test_constructor():
 
     # THEN
     app.add_url_rule.assert_called_once_with(
-        endpoint='/postreceive',
-        rule='/postreceive',
-        view_func=webhook._postreceive,
-        methods=['POST'])
+        endpoint="/postreceive", rule="/postreceive", view_func=webhook._postreceive, methods=["POST"]
+    )
 
 
 def test_run_push_hook(webhook, handler, push_request):
@@ -83,10 +80,7 @@ def test_can_handle_zero_events(webhook, push_request):
     webhook._postreceive()  # noop
 
 
-@pytest.mark.parametrize("secret", [
-    u"secret",
-    b"secret"
-])
+@pytest.mark.parametrize("secret", [u"secret", b"secret"])
 @mock.patch("github_webhook.webhook.hmac")
 def test_calls_if_signature_is_correct(mock_hmac, app, push_request, secret):
     # GIVEN
