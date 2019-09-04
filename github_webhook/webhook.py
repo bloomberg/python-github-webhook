@@ -21,7 +21,18 @@ class Webhook(object):
 
         self._hooks = collections.defaultdict(list)
         self._logger = logging.getLogger("webhook")
-        if secret is not None and not isinstance(secret, six.binary_type):
+        if secret is not None:
+            self.set_secret(secret)
+        else:
+            self._secret = None
+
+    def set_secret(self, secret):
+        """
+        Set secret value for the webhook
+
+        :param secret: secret used to authenticate the hook comes from Github
+        """
+        if not isinstance(secret, six.binary_type):
             secret = secret.encode("utf-8")
         self._secret = secret
 
