@@ -1,0 +1,6 @@
+__pycache__
+.tox/*
+*.pyc
+.coverage*
+!.coveragerc
+*egg*
