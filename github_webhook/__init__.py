@@ -13,7 +13,7 @@ from textwrap import dedent
 import sys
 
 if sys.version_info[0] < 3:
-    raise Exception(
+    raise RuntimeError(
         dedent(
             """Python runtime with major version >= 3 is required:
                   currently running on Python {version}""".format(

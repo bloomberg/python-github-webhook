@@ -9,8 +9,8 @@ setup(
     author_email="achamberlai9@bloomberg.net, fphillips7@bloomberg.net, dkiss1@bloomberg.net, dbeer1@bloomberg.net",
     license="Apache 2.0",
     packages=["github_webhook"],
-    install_requires=["flask==1.0.2"],
-    tests_require=["mock", "pytest", "nose"],
+    install_requires=["flask>=1.0.2"],
+    tests_require=["pytest"],
     classifiers=[
         "Development Status :: 4 - Beta",
         "Framework :: Flask",
