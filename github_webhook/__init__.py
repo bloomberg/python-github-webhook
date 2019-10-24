@@ -8,7 +8,21 @@
     :license: Apache License, Version 2.0
 """
 
-from github_webhook.webhook import Webhook  # noqa
+from textwrap import dedent
+
+import sys
+
+if sys.version_info[0] < 3:
+    raise Exception(
+        dedent(
+            """Python runtime with major version >= 3 is required:
+                  currently running on Python {version}""".format(
+                version=sys.version_info[0]
+            )
+        )
+    )
+
+from github_webhook.webhook import Webhook
 
 # -----------------------------------------------------------------------------
 # Copyright 2015 Bloomberg Finance L.P.
