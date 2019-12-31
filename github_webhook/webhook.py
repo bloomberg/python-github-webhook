@@ -2,7 +2,7 @@ import collections
 import hashlib
 import hmac
 import logging
-
+import json
 import six
 from flask import abort, request
 
@@ -58,7 +58,12 @@ class Webhook(object):
                 abort(400, "Invalid signature")
 
         event_type = _get_header("X-Github-Event")
-        data = request.get_json()
+        content_type = _get_header("content-type")
+        data = (
+            json.loads(request.form.to_dict(flat=True)["payload"])
+            if content_type == "application/x-www-form-urlencoded"
+            else request.get_json()
+        )
 
         if data is None:
             abort(400, "Request body must contain json")

@@ -4,6 +4,7 @@ from __future__ import print_function
 
 import pytest
 import werkzeug
+import json
 
 try:
     from unittest import mock
@@ -23,6 +24,14 @@ def mock_request():
 @pytest.fixture
 def push_request(mock_request):
     mock_request.headers["X-Github-Event"] = "push"
+    mock_request.headers["content-type"] = "application/json"
+    yield mock_request
+
+
+@pytest.fixture
+def push_request_encoded(mock_request):
+    mock_request.headers["X-Github-Event"] = "push"
+    mock_request.headers["content-type"] = "application/x-www-form-urlencoded"
     yield mock_request
 
 
@@ -64,9 +73,35 @@ def test_run_push_hook(webhook, handler, push_request):
     handler.assert_called_once_with(push_request.get_json.return_value)
 
 
+def test_run_push_hook_urlencoded(webhook, handler, push_request_encoded):
+    github_mock_payload = {"payload": '{"key": "value"}'}
+    push_request_encoded.form.to_dict.return_value = github_mock_payload
+    payload = json.loads(github_mock_payload["payload"])
+
+    # WHEN
+    webhook._postreceive()
+
+    # THEN
+    handler.assert_called_once_with(payload)
+
+
 def test_do_not_run_push_hook_on_ping(webhook, handler, mock_request):
     # GIVEN
     mock_request.headers["X-Github-Event"] = "ping"
+    mock_request.headers["content-type"] = "application/json"
+
+    # WHEN
+    webhook._postreceive()
+
+    # THEN
+    handler.assert_not_called()
+
+
+def test_do_not_run_push_hook_on_ping_urlencoded(webhook, handler, mock_request):
+    # GIVEN
+    mock_request.headers["X-Github-Event"] = "ping"
+    mock_request.headers["content-type"] = "application/x-www-form-urlencoded"
+    mock_request.form.to_dict.return_value = {"payload": '{"key": "value"}'}
 
     # WHEN
     webhook._postreceive()
