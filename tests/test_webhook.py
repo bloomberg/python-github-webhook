@@ -65,6 +65,44 @@ def test_constructor():
     )
 
 
+def test_init_app_flow():
+    # GIVEN
+    app = mock.Mock()
+
+    # WHEN
+    webhook = Webhook()
+    webhook.init_app(app)
+
+    # THEN
+    app.add_url_rule.assert_called_once_with(
+        endpoint="/postreceive", rule="/postreceive", view_func=webhook._postreceive, methods=["POST"]
+    )
+
+
+def test_init_app_flow_should_not_accidentally_override_secrets():
+    # GIVEN
+    app = mock.Mock()
+
+    # WHEN
+    webhook = Webhook(secret="hello-world-of-secrecy")
+    webhook.init_app(app)
+
+    # THEN
+    assert webhook._secret is not None
+
+
+def test_init_app_flow_should_override_secrets():
+    # GIVEN
+    app = mock.Mock()
+
+    # WHEN
+    webhook = Webhook(secret="hello-world-of-secrecy")
+    webhook.init_app(app, secret="a-new-world-of-secrecy")
+
+    # THEN
+    assert webhook._secret == "a-new-world-of-secrecy".encode("utf-8")
+
+
 def test_run_push_hook(webhook, handler, push_request):
     # WHEN
     webhook._postreceive()
