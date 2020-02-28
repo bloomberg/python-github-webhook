@@ -18,7 +18,7 @@ class Webhook(object):
 
     def __init__(self, app=None, endpoint="/postreceive", secret=None):
         self.app = app
-        self.set_secret(secret)
+        self.secret = secret
         if app is not None:
             self.init_app(app, endpoint, secret)
 
@@ -26,10 +26,15 @@ class Webhook(object):
         self._hooks = collections.defaultdict(list)
         self._logger = logging.getLogger("webhook")
         if secret is not None:
-            self.set_secret(secret)
+            self.secret = secret
         app.add_url_rule(rule=endpoint, endpoint=endpoint, view_func=self._postreceive, methods=["POST"])
 
-    def set_secret(self, secret=None):
+    @property
+    def secret(self):
+        return self._secret
+
+    @secret.setter
+    def secret(self, secret):
         if secret is not None and not isinstance(secret, six.binary_type):
             secret = secret.encode("utf-8")
         self._secret = secret

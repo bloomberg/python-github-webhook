@@ -88,7 +88,7 @@ def test_init_app_flow_should_not_accidentally_override_secrets():
     webhook.init_app(app)
 
     # THEN
-    assert webhook._secret is not None
+    assert webhook.secret is not None
 
 
 def test_init_app_flow_should_override_secrets():
@@ -100,7 +100,7 @@ def test_init_app_flow_should_override_secrets():
     webhook.init_app(app, secret="a-new-world-of-secrecy")
 
     # THEN
-    assert webhook._secret == "a-new-world-of-secrecy".encode("utf-8")
+    assert webhook.secret == "a-new-world-of-secrecy".encode("utf-8")
 
 
 def test_run_push_hook(webhook, handler, push_request):
