@@ -23,7 +23,7 @@ webhook = Webhook(app) # Defines '/postreceive' endpoint
 def hello_world():
     return "Hello, World!"
 
-@webhook.hook()        # Defines a handler for the 'push' event
+@webhook.hook("push")  # Defines a handler for the 'push' event
 def on_push(data):
     print("Got push with: {0}".format(data))
 
