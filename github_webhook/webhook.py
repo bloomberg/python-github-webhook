@@ -17,14 +17,14 @@ class Webhook(object):
     """
 
     def __init__(self, app=None, endpoint="/postreceive", secret=None):
-        self.app = app
+        self._hooks = collections.defaultdict(list)
         self.secret = secret
         if app is not None:
             self.init_app(app, endpoint, secret)
 
     def init_app(self, app, endpoint="/postreceive", secret=None):
-        self._hooks = collections.defaultdict(list)
         self._logger = logging.getLogger("webhook")
+        self.app = app
         if secret is not None:
             self.secret = secret
         app.add_url_rule(rule=endpoint, endpoint=endpoint, view_func=self._postreceive, methods=["POST"])
