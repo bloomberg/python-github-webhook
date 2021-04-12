@@ -56,7 +56,7 @@ class Webhook(object):
     def _get_digest(self):
         """Return message digest if a secret key was provided"""
 
-        return hmac.new(self._secret, request.data, hashlib.sha1).hexdigest() if self._secret else None
+        return hmac.new(self._secret, request.data, hashlib.sha256).hexdigest() if self._secret else None
 
     def _postreceive(self):
         """Callback from Flask"""
@@ -64,11 +64,11 @@ class Webhook(object):
         digest = self._get_digest()
 
         if digest is not None:
-            sig_parts = _get_header("X-Hub-Signature").split("=", 1)
+            sig_parts = _get_header("X-Hub-Signature-256").split("=", 1)
             if not isinstance(digest, six.text_type):
                 digest = six.text_type(digest)
 
-            if len(sig_parts) < 2 or sig_parts[0] != "sha1" or not hmac.compare_digest(sig_parts[1], digest):
+            if len(sig_parts) < 2 or sig_parts[0] != "sha256" or not hmac.compare_digest(sig_parts[1], digest):
                 abort(400, "Invalid signature")
 
         event_type = _get_header("X-Github-Event")
