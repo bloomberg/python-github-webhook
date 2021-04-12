@@ -158,7 +158,7 @@ def test_can_handle_zero_events(webhook, push_request):
 def test_calls_if_signature_is_correct(mock_hmac, app, push_request, secret):
     # GIVEN
     webhook = Webhook(app, secret=secret)
-    push_request.headers["X-Hub-Signature"] = "sha1=hash_of_something"
+    push_request.headers["X-Hub-Signature-256"] = "sha256=hash_of_something"
     push_request.data = b"something"
     handler = mock.Mock()
     mock_hmac.compare_digest.return_value = True
@@ -175,7 +175,7 @@ def test_calls_if_signature_is_correct(mock_hmac, app, push_request, secret):
 def test_does_not_call_if_signature_is_incorrect(mock_hmac, app, push_request):
     # GIVEN
     webhook = Webhook(app, secret="super_secret")
-    push_request.headers["X-Hub-Signature"] = "sha1=hash_of_something"
+    push_request.headers["X-Hub-Signature-256"] = "sha256=hash_of_something"
     push_request.data = b"something"
     handler = mock.Mock()
     mock_hmac.compare_digest.return_value = False
