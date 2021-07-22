@@ -84,10 +84,11 @@ class Webhook(object):
 
         self._logger.info("%s (%s)", _format_event(event_type, data), _get_header("X-Github-Delivery"))
 
+        return_data = []
         for hook in self._hooks.get(event_type, []):
-            hook(data)
+            return_data.append(hook(data))
 
-        return "", 204
+        return json.dumps(return_data), 200
 
 
 def _get_header(key):
