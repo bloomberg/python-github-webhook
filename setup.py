@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="github-webhook",
-    version="1.0.3",
+    version="1.0.4",
     description="Very simple, but powerful, microframework for writing Github webhooks in Python",
     url="https://github.com/bloomberg/python-github-webhook",
     author="Alex Chamberlain, Fred Phillips, Daniel Kiss, Daniel Beer",
