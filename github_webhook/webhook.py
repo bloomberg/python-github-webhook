@@ -4,7 +4,7 @@ import hmac
 import logging
 import json
 import six
-from flask import abort, request
+from quart import abort, request
 
 
 class Webhook(object):
@@ -56,9 +56,9 @@ class Webhook(object):
     def _get_digest(self):
         """Return message digest if a secret key was provided"""
 
-        return hmac.new(self._secret, request.data, hashlib.sha1).hexdigest() if self._secret else None
+        return hmac.new(self._secret, request.get_data(), hashlib.sha1).hexdigest() if self._secret else None
 
-    def _postreceive(self):
+    async def _postreceive(self):
         """Callback from Flask"""
 
         digest = self._get_digest()
@@ -73,8 +73,9 @@ class Webhook(object):
 
         event_type = _get_header("X-Github-Event")
         content_type = _get_header("content-type")
+        form_data = await request.form
         data = (
-            json.loads(request.form.to_dict(flat=True)["payload"])
+            json.loads(form_data.to_dict(flat=True)["payload"])
             if content_type == "application/x-www-form-urlencoded"
             else request.get_json()
         )
@@ -85,7 +86,7 @@ class Webhook(object):
         self._logger.info("%s (%s)", _format_event(event_type, data), _get_header("X-Github-Delivery"))
 
         for hook in self._hooks.get(event_type, []):
-            hook(data)
+            await hook(data)
 
         return "", 204
 
