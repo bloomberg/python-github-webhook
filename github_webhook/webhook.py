@@ -86,7 +86,7 @@ class Webhook(object):
         self._logger.info("%s (%s)", _format_event(event_type, data), _get_header("X-Github-Delivery"))
 
         for hook in self._hooks.get(event_type, []):
-            hook(data)
+            await hook(data)
 
         return "", 204
 
