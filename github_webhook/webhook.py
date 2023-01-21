@@ -4,7 +4,7 @@ import hmac
 import logging
 import json
 import six
-from flask import abort, request
+from quart import abort, request
 
 
 class Webhook(object):
@@ -58,7 +58,7 @@ class Webhook(object):
 
         return hmac.new(self._secret, request.get_data(), hashlib.sha1).hexdigest() if self._secret else None
 
-    def _postreceive(self):
+    async def _postreceive(self):
         """Callback from Flask"""
 
         digest = self._get_digest()
